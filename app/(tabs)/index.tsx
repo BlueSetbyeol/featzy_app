@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const PlaceholderImage = require("@/assets/images/background-image.png");
+// const PlaceholderImage = require("@/assets/images/background-image.png");
 
 export default function Index() {
   const insets = useSafeAreaInsets();

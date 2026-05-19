@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
@@ -18,12 +19,12 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#ffffff",
         headerShown: false,
         // headerStyle: {
-        //   backgroundColor: "#860909",
+        //   backgroundColor: Colors.primary,
         // },
         // headerShadowVisible: false,
         // headerTintColor: "#fff",
         tabBarStyle: {
-          backgroundColor: "#860909",
+          backgroundColor: Colors.background,
           height: 80,
           paddingTop: 5,
         },
