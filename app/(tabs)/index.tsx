@@ -1,98 +1,83 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const PlaceholderImage = require("@/assets/images/background-image.png");
 
-export default function HomeScreen() {
+export default function Index() {
+  const insets = useSafeAreaInsets();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Text style={styles.text}>Home page</Text>
+    </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    // <GestureHandlerRootView style={styles.container}>
+    //   <View style={styles.container}>
+    //     <View style={styles.imageContainer}>
+    //       <View ref={imageRef} collapsable={false}>
+    //         <ImageViewer
+    //           imgSource={PlaceholderImage}
+    //           selectedImage={selectedImage}
+    //         />
+    //         {pickedEmoji && (
+    //           <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+    //         )}
+    //       </View>
+    //     </View>
+    //     {showAppOptions ? (
+    //       <View style={styles.optionsContainer}>
+    //         <View style={styles.optionsRow}>
+    //           <IconButton icon="refresh" label="Reset" onPress={onReset} />
+    //           <CircleButton onPress={onAddSticker} />
+    //           <IconButton
+    //             icon="save-alt"
+    //             label="Save"
+    //             onPress={onSaveImageAsync}
+    //           />
+    //         </View>
+    //       </View>
+    //     ) : (
+    //       <View style={styles.footerContainer}>
+    //         <Button
+    //           theme="primary"
+    //           label="Choose a photo"
+    //           onPress={pickImageAsync}
+    //         />
+    //         <Button
+    //           label="Use this photo"
+    //           onPress={() => setShowAppOptions(true)}
+    //         />
+    //       </View>
+    //     )}
+    //     <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+    //       <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+    //     </EmojiPicker>
+    //   </View>
+    // </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#25292e",
+    alignItems: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  text: {
+    color: "#fff",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  imageContainer: {
+    flex: 1,
+  },
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: "center",
+  },
+  optionsContainer: {
+    position: "absolute",
+    bottom: 80,
+  },
+  optionsRow: {
+    alignItems: "center",
+    flexDirection: "row",
   },
 });
