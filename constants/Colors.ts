@@ -31,6 +31,7 @@ export const Colors = {
   sidebarAccentForeground: "#57563c",
   sidebarBorder: "#e7ded2",
   sidebarRing: "#b23a2b",
+  shadow: "#7170704f",
   error: "#bd1414",
   success: "#167a3e",
 } as const;
