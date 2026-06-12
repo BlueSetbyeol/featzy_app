@@ -1,18 +1,11 @@
-import Apple from "@/assets/images/icon/apple.svg";
-import Google from "@/assets/images/icon/googlepay.svg";
 import Logo from "@/assets/images/logo_white.svg";
-import Button from "@/components/Button";
+import LoginTab from "@/components/LoginTab";
+import SignInTab from "@/components/SignInTab";
 import Tab from "@/components/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -28,8 +21,6 @@ export default function Login() {
   const [connectionOrInscription, setConnectionOrInscription] = useState<
     "connexion" | "inscription"
   >("connexion");
-  const [identifiant, onChangeIdentifiant] = useState("");
-  const [password, onChangePassword] = useState("");
 
   if (!fontsLoaded) return null;
 
@@ -52,6 +43,7 @@ export default function Login() {
           <View
             style={[
               styles.card,
+              styles.shadow,
               {
                 width: width * 0.9,
                 height: height * 0.6,
@@ -80,65 +72,10 @@ export default function Login() {
                 }}
               />
             </View>
-            {connectionOrInscription === "connexion" && (
-              <View style={[{ width: width * 0.81, alignItems: "center" }]}>
-                <Button
-                  label="Continuer avec Google"
-                  theme="outline"
-                  onPress={() => {}}
-                  icon={Google}
-                />
-                <Button
-                  label="Continuer avec Apple"
-                  theme="outline"
-                  onPress={() => {}}
-                  icon={Apple}
-                />
-                <View
-                  style={[
-                    {
-                      width: width * 0.8,
-                      borderColor: Colors.secondary,
-                      borderWidth: 1,
-                      marginVertical: 6,
-                    },
-                  ]}
-                />
-
-                <Text style={[styles.input_label, { width: width * 0.8 }]}>
-                  Email
-                </Text>
-                <TextInput
-                  style={[
-                    styles.input,
-                    { width: width * 0.81, height: height * 0.045 },
-                  ]}
-                  onChangeText={onChangeIdentifiant}
-                  value={identifiant}
-                  placeholder="exemple@mail.com"
-                  keyboardType="numeric"
-                  autoComplete={"email"}
-                />
-                <Text style={[styles.input_label, { width: width * 0.8 }]}>
-                  Mot de passe
-                </Text>
-                <TextInput
-                  style={[
-                    styles.input,
-                    {
-                      width: width * 0.81,
-                      height: height * 0.045,
-                    },
-                  ]}
-                  onChangeText={onChangePassword}
-                  value={password}
-                  placeholder="••••••••"
-                  keyboardType="numeric"
-                  secureTextEntry={true}
-                />
-                <Button label={"Mot de passe oublié ?"} theme={"link"} />
-                <Button label={"Se connecter"} theme={"primary"} />
-              </View>
+            {connectionOrInscription === "connexion" ? (
+              <LoginTab />
+            ) : (
+              <SignInTab />
             )}
           </View>
         </View>
@@ -170,7 +107,14 @@ const styles = StyleSheet.create({
     borderColor: Colors.secondary,
     borderWidth: 1,
     borderRadius: 8,
-    boxShadow: Colors.shadow,
+  },
+  shadow: {
+    shadowColor: "#00000028",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2,
+    boxShadow: "0px 2px 3px #00000028",
   },
   tabsContainer: {
     flexDirection: "row",
@@ -178,18 +122,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.muted,
     borderRadius: 6,
-  },
-  input_label: {
-    color: Colors.foreground,
-    textAlign: "left",
-  },
-  input: {
-    marginVertical: 4,
-    marginHorizontal: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 6,
-    borderColor: Colors.border,
-    color: Colors.mutedForeground,
   },
 });

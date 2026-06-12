@@ -1,0 +1,142 @@
+import { isAxiosError } from "axios";
+import api, { initCsrf } from "../lib/axios";
+import {
+  AuthResponse,
+  AuthUser,
+  ForgotPasswordPayload,
+  LoginPayload,
+  RegisterPayload,
+  ResetPasswordPayload,
+  Session,
+  VerifyEmailPayload,
+} from "../types/authTypes";
+
+const authApi = {
+  // Auth
+  login: async (payload: LoginPayload): Promise<AuthResponse> => {
+    try {
+      await initCsrf();
+      const { data } = await api.post<{ data: AuthResponse }>(
+        "/auth/login",
+        payload,
+      );
+      return data.data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Identifiants incorrects";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  register: async (payload: RegisterPayload): Promise<AuthResponse> => {
+    try {
+      await initCsrf();
+      const { data } = await api.post<{ data: AuthResponse }>(
+        "/auth/register",
+        payload,
+      );
+      return data.data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Erreur lors de l'inscription";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  logout: async (): Promise<void> => {
+    try {
+      await api.post("/auth/logout");
+    } catch {
+      throw new Error("Erreur lors de la déconnexion");
+    }
+  },
+
+  me: async (): Promise<AuthUser> => {
+    try {
+      const { data } = await api.get<{ data: AuthUser }>("/auth/me");
+      return data.data;
+    } catch {
+      throw new Error("Impossible de récupérer l'utilisateur");
+    }
+  },
+
+  // Email verification
+
+  verifyEmail: async (payload: VerifyEmailPayload): Promise<void> => {
+    try {
+      await api.post("/auth/email/verify", payload);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Erreur de vérification email";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  // Password reset
+
+  forgotPassword: async (payload: ForgotPasswordPayload): Promise<void> => {
+    try {
+      await initCsrf();
+      await api.post("/auth/password/forgot", payload);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Erreur lors de la demande";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  resetPassword: async (payload: ResetPasswordPayload): Promise<void> => {
+    try {
+      await initCsrf();
+      await api.post("/auth/password/reset", payload);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Erreur lors de la réinitialisation";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  // Sessions
+
+  getSessions: async (): Promise<Session[]> => {
+    try {
+      const { data } = await api.get<{ data: Session[] }>("/auth/sessions");
+      return data.data;
+    } catch {
+      throw new Error("Impossible de récupérer les sessions");
+    }
+  },
+
+  revokeSession: async (id: string): Promise<void> => {
+    try {
+      await api.delete(`/auth/sessions/${id}`);
+    } catch {
+      throw new Error("Impossible de révoquer la session");
+    }
+  },
+
+  revokeAllSessions: async (): Promise<void> => {
+    try {
+      await api.delete("/auth/sessions");
+    } catch {
+      throw new Error("Impossible de révoquer toutes les sessions");
+    }
+  },
+};
+
+export default authApi;
