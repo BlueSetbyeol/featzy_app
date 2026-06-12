@@ -1,9 +1,7 @@
 import authApi from "@/app/api/authApi";
-import AuthContext from "@/app/contexts/AuthContext";
 import { LoginUserSchema } from "@/app/services/userSchema";
 import Apple from "@/assets/images/icon/apple.svg";
 import Google from "@/assets/images/icon/googlepay.svg";
-import { Colors } from "@/constants/Colors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as AuthSession from "expo-auth-session";
 import { router } from "expo-router";
@@ -19,6 +17,8 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import * as z from "zod";
+import { Colors } from "../constants/Colors";
+import AuthContext from "../contexts/AuthContext";
 import Button from "./Button";
 
 WebBrowser.maybeCompleteAuthSession();
