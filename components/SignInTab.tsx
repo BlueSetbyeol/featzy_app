@@ -1,8 +1,8 @@
-import authApi from "@/app/api/authApi";
-import { CreateUserSchema } from "@/app/services/userSchema";
+import authApi from "@/api/authApi";
 import Apple from "@/assets/images/icon/apple.svg";
 import Google from "@/assets/images/icon/googlepay.svg";
 import { Colors } from "@/constants/Colors";
+import { CreateUserSchema } from "@/services/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
@@ -56,18 +56,8 @@ export default function SignInTab() {
 
   return (
     <View style={[{ width: width * 0.81, alignItems: "center" }]}>
-      <Button
-        label="Continuer avec Google"
-        theme="outline"
-        onPress={() => {}}
-        icon={Google}
-      />
-      <Button
-        label="Continuer avec Apple"
-        theme="outline"
-        onPress={() => {}}
-        icon={Apple}
-      />
+      <Button label="Continuer avec Google" theme="outline" icon={Google} />
+      <Button label="Continuer avec Apple" theme="outline" icon={Apple} />
       <View
         style={[
           {
