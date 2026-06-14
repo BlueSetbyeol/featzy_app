@@ -103,6 +103,12 @@ export default function LoginTab() {
               placeholder="••••••••"
               keyboardType="default"
               secureTextEntry={true}
+              onSubmitEditing={LoginForm.handleSubmit(loginUser, (errors) => {
+                Toast.show({
+                  type: "error",
+                  text1: "Veuillez remplir tous les champs",
+                });
+              })}
             />
           </>
         )}

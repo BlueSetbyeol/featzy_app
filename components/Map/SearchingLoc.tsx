@@ -35,24 +35,52 @@ export default function SearchingLoc({ onFiltersApply }: SearchingLocProps) {
   const [dialogVisible, setDialogVisible] = useState(false);
 
   async function handleAddressSubmit() {
-    const googleResp = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-        userLocation ?? "",
-      )}&key=${GMKey}`,
-    );
-    const newGeocode = await googleResp.json();
+    if (userLocation) {
+      if (!userLocation.trim()) {
+        setUserLocationError(["Veuillez entrer une adresse"]);
+        setLocationStatus("error");
+        return;
+      }
 
-    if (newGeocode.error_message && newGeocode.status === "REQUEST_DENIED") {
-      setUserLocationError([
-        "This address cannot be geolocated. Please avoid using symbols, apartment / suite numbers, city names or zip codes",
-      ]);
-      setLocationStatus("error");
-    } else {
-      setUserLocationError([]);
-      setLocationStatus("success");
-      const { lat, lng } = newGeocode.results[0].geometry.location;
-      setMapRegion({ lat, lng, latitudeDelta: 0.05, longitudeDelta: 0.05 });
-      setUserCenter({ lat, lng });
+      try {
+        const googleResp = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            userLocation,
+          )}&key=${GMKey}`,
+        );
+        const newGeocode = await googleResp.json();
+        console.log(
+          "geocode status:",
+          newGeocode.status,
+          "results:",
+          newGeocode.results?.[0],
+        );
+
+        if (newGeocode.status !== "OK" || !newGeocode.results?.length) {
+          setUserLocationError([
+            "This address cannot be geolocated. Please avoid using symbols, apartment / suite numbers, city names or zip codes",
+          ]);
+          setLocationStatus("error");
+          return;
+        }
+
+        setUserLocationError([]);
+        setLocationStatus("success");
+        const { lat: latitude, lng: longitude } =
+          newGeocode.results[0].geometry.location;
+        console.log("geocoded coords:", latitude, longitude);
+        setMapRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+        });
+        setUserCenter({ latitude, longitude });
+      } catch (err) {
+        console.error("Geocoding failed:", err);
+        setUserLocationError(["Une erreur est survenue, veuillez réessayer"]);
+        setLocationStatus("error");
+      }
     }
   }
 
@@ -70,12 +98,12 @@ export default function SearchingLoc({ onFiltersApply }: SearchingLocProps) {
     const { latitude, longitude } = position.coords;
 
     setMapRegion({
-      lat: latitude,
-      lng: longitude,
+      latitude: latitude,
+      longitude: longitude,
       latitudeDelta: 0.05,
       longitudeDelta: 0.05,
     });
-    setUserCenter({ lat: latitude, lng: longitude });
+    setUserCenter({ latitude: latitude, longitude: longitude });
 
     try {
       const resp = await fetch(

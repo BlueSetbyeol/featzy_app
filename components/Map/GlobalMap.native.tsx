@@ -1,6 +1,6 @@
 import GeoContext from "@/contexts/GeoContext";
 import type { Restaurant } from "@/types/restaurantTypes";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { StyleSheet } from "react-native";
 import MapView, { Marker, Region } from "react-native-maps";
 
@@ -16,25 +16,42 @@ const DEFAULT_REGION: Region = {
 };
 
 export default function MapGlobal({ restaurants }: MapGlobalProps) {
-  const { mapRegion, setMapRegion } = useContext(GeoContext);
+  const { mapRegion, setMapRegion, userCenter } = useContext(GeoContext);
+  const mapRef = useRef<MapView>(null);
 
   const initialRegion: Region = mapRegion
     ? {
-        latitude: mapRegion.lat,
-        longitude: mapRegion.lng,
+        latitude: mapRegion.latitude,
+        longitude: mapRegion.longitude,
         latitudeDelta: mapRegion.latitudeDelta,
         longitudeDelta: mapRegion.longitudeDelta,
       }
     : DEFAULT_REGION;
 
+  useEffect(() => {
+    console.log("userCenter changed:", userCenter, "mapRef:", !!mapRef.current);
+    if (!userCenter || !mapRef.current) return;
+
+    mapRef.current.animateToRegion(
+      {
+        latitude: userCenter.latitude,
+        longitude: userCenter.longitude,
+        latitudeDelta: mapRegion?.latitudeDelta ?? 0.05,
+        longitudeDelta: mapRegion?.longitudeDelta ?? 0.05,
+      },
+      800,
+    );
+  }, [userCenter]);
+
   return (
     <MapView
+      ref={mapRef}
       style={styles.map}
       initialRegion={initialRegion}
       onRegionChangeComplete={(region) => {
         setMapRegion({
-          lat: region.latitude,
-          lng: region.longitude,
+          latitude: region.latitude,
+          longitude: region.longitude,
           latitudeDelta: region.latitudeDelta,
           longitudeDelta: region.longitudeDelta,
         });

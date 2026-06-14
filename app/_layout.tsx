@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 
 import { LoginProvider } from "@/contexts/AuthContext";
+import { GeoProvider } from "@/contexts/GeoContext";
 import { Lato_300Light } from "@expo-google-fonts/lato/300Light";
 import { Lato_400Regular } from "@expo-google-fonts/lato/400Regular";
 import { Lato_700Bold } from "@expo-google-fonts/lato/700Bold";
@@ -64,28 +65,30 @@ export default function RootLayout() {
 
   return (
     <>
-      <LoginProvider>
-        <SafeAreaProvider style={{ height: "100%" }}>
-          <SafeAreaView style={{ height: "100%" }}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              style={{ flex: 1, height: height }}
-            >
-              <ScrollView
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  justifyContent: "center",
-                }}
+      <GeoProvider>
+        <LoginProvider>
+          <SafeAreaProvider style={{ height: "100%" }}>
+            <SafeAreaView style={{ height: "100%" }}>
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{ flex: 1, height: height }}
               >
-                <Slot />
-                <StatusBar style="auto" />
-              </ScrollView>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </LoginProvider>
-      <Toast key="global-toast" />
+                <ScrollView
+                  keyboardShouldPersistTaps="handled"
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Slot />
+                  <StatusBar style="auto" />
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </LoginProvider>
+        <Toast key="global-toast" />
+      </GeoProvider>
     </>
   );
 }

@@ -181,7 +181,7 @@ export default function SignInTab() {
                     <Text style={[styles.input_label]}>Confirmation</Text>
                     <TextInput
                       style={[styles.input, { height: height * 0.055 }]}
-                      onChangeText={onChange}
+                      onSubmitEditing={onChange}
                       value={value}
                       placeholder="••••••••"
                       keyboardType="default"
