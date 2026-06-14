@@ -11,7 +11,12 @@ import { useFonts } from "@expo-google-fonts/lato/useFonts";
 import { Lexend_300Light } from "@expo-google-fonts/lexend/300Light";
 import { Lexend_400Regular } from "@expo-google-fonts/lexend/400Regular";
 import { Lexend_700Bold } from "@expo-google-fonts/lexend/700Bold";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
@@ -27,6 +32,7 @@ export default function RootLayout() {
     Lexend_700Bold,
   });
 
+  const { width, height } = useWindowDimensions();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -63,9 +69,15 @@ export default function RootLayout() {
           <SafeAreaView style={{ height: "100%" }}>
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
-              style={{ flex: 1 }}
+              style={{ flex: 1, height: height }}
             >
-              <ScrollView keyboardShouldPersistTaps="handled">
+              <ScrollView
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  justifyContent: "center",
+                }}
+              >
                 <Slot />
                 <StatusBar style="auto" />
               </ScrollView>

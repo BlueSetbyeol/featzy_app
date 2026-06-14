@@ -28,7 +28,6 @@ export default function TabLayout() {
           paddingTop: 5,
         },
         tabBarIconStyle: {
-          flex: 1,
           alignItems: "center",
           justifyContent: "center",
         },
