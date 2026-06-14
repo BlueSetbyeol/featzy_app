@@ -1,14 +1,52 @@
+import { RestaurantApi, RestaurantQuery } from "@/api/RestaurantApi";
+import { extractApiError } from "@/lib/axios";
+import { Restaurant } from "@/types/restaurantTypes";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 // const PlaceholderImage = require("@/assets/images/background-image.png");
 
 export default function Index() {
   const insets = useSafeAreaInsets();
+
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [query, setQuery] = useState<RestaurantQuery>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    RestaurantApi.getAllPages(query)
+      .then((list) => {
+        if (!cancelled) {
+          setRestaurants(
+            list.filter(
+              (restaurant) =>
+                restaurant.address.latitude !== null &&
+                restaurant.address.longitude !== null,
+            ),
+          );
+        }
+      })
+      .catch((error) => {
+        if (!cancelled)
+          Toast.show({
+            type: "error",
+            text1: `${extractApiError(error).message}`,
+          });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [query]);
+
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text style={styles.text}>Home page</Text>
-    </View>
+    <GestureHandlerRootView style={styles.container}>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <Text style={styles.text}>Home page</Text>
+      </View>
+    </GestureHandlerRootView>
 
     // <GestureHandlerRootView style={styles.container}>
     //   <View style={styles.container}>
@@ -60,6 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#25292e",
+    justifyContent: "center",
     alignItems: "center",
   },
   text: {

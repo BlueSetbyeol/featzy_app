@@ -1,7 +1,7 @@
 import Logo from "@/assets/images/logo_white.svg";
 import LoginTab from "@/components/LogInTab";
 import SignInTab from "@/components/SignInTab";
-import Tab from "@/components/Tab";
+import Tab from "@/components/ui/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
 import { useState } from "react";
