@@ -1,16 +1,15 @@
+import Home from "@/assets/images/icon/home.svg";
 import { Colors } from "@/constants/Colors";
-import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
 
-const Home = require("@/assets/images/icon/home.svg");
-const HomeSelected = require("@/assets/images/icon/home_selected.svg");
-const Map = require("@/assets/images/icon/map.svg");
-const MapSelected = require("@/assets/images/icon/map_selected.svg");
-const Resa = require("@/assets/images/icon/reservation.svg");
-const ResaSelected = require("@/assets/images/icon/reservation_selected.svg");
-const Profil = require("@/assets/images/icon/profil.svg");
-const ProfilSelected = require("@/assets/images/icon/profil_selected.svg");
+import HomeSelected from "@/assets/images/icon/home_selected.svg";
+import Map from "@/assets/images/icon/map.svg";
+import MapSelected from "@/assets/images/icon/map_selected.svg";
+import Profil from "@/assets/images/icon/profil.svg";
+import ProfilSelected from "@/assets/images/icon/profil_selected.svg";
+import Resa from "@/assets/images/icon/reservation.svg";
+import ResaSelected from "@/assets/images/icon/reservation_selected.svg";
 
 export default function TabLayout() {
   return (
@@ -29,7 +28,6 @@ export default function TabLayout() {
           paddingTop: 5,
         },
         tabBarIconStyle: {
-          flex: 1,
           alignItems: "center",
           justifyContent: "center",
         },
@@ -40,13 +38,12 @@ export default function TabLayout() {
         options={{
           title: "Accueil",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={focused ? Home : HomeSelected}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <Home style={styles.image} />
+            ) : (
+              <HomeSelected style={styles.image} />
+            ),
         }}
       />
       <Tabs.Screen
@@ -54,13 +51,12 @@ export default function TabLayout() {
         options={{
           title: "Map",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={focused ? Map : MapSelected}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <Map style={styles.image} />
+            ) : (
+              <MapSelected style={styles.image} />
+            ),
         }}
       />
       <Tabs.Screen
@@ -68,13 +64,12 @@ export default function TabLayout() {
         options={{
           title: "Réservation",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={focused ? Resa : ResaSelected}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <Resa style={styles.image} />
+            ) : (
+              <ResaSelected style={styles.image} />
+            ),
         }}
       />
       <Tabs.Screen
@@ -82,13 +77,12 @@ export default function TabLayout() {
         options={{
           title: "Profil",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={focused ? Profil : ProfilSelected}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <Profil style={styles.image} />
+            ) : (
+              <ProfilSelected style={styles.image} />
+            ),
         }}
       />
     </Tabs>
