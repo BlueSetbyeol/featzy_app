@@ -1,8 +1,7 @@
 import Separator from "@/components/ui/Separator";
-import { Colors } from "@/constants/Colors";
 import type { Restaurant } from "@/types/restaurantTypes";
-import { Href, Link } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import Button from "../ui/Button";
 import Drawer from "../ui/Drawer";
 import RestaurantAvailableTime from "./RestaurantAvailableTime";
 import RestaurantDrawerContent from "./RestaurantDrawerContent";
@@ -42,21 +41,7 @@ export default function RestaurantDrawer({
         </ScrollView>
 
         <View style={styles.footer}>
-          {/* <Link
-            href={{
-              pathname: "/restaurant/[id]/new-reservation",
-              params: { id: restaurant.id },
-            }}
-            asChild
-          > */}
-          <Link
-            href={`/restaurant/${restaurant.id}/new-reservation` as Href}
-            asChild
-          >
-            <Pressable style={styles.reserveButton}>
-              <Text style={styles.reserveButtonText}>Réserver</Text>
-            </Pressable>
-          </Link>
+          <Button label={"Reserver"} theme={"primary"} disabled={false} />
         </View>
       </View>
     </Drawer>
@@ -69,23 +54,14 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-    paddingHorizontal: 24,
   },
   scrollContent: {
     paddingBottom: 16,
+    paddingHorizontal: 24,
   },
   footer: {
     paddingHorizontal: 16,
     paddingTop: 8,
     paddingBottom: 16,
-  },
-  reserveButton: {
-    borderRadius: 8,
-    backgroundColor: Colors.primary,
-    padding: 8,
-    alignItems: "center",
-  },
-  reserveButtonText: {
-    color: Colors.primaryForeground,
   },
 });

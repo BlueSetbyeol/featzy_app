@@ -1,174 +1,149 @@
 import { Colors } from "@/constants/Colors";
-import { Pressable, StyleSheet, Text } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 import { SvgProps } from "react-native-svg";
+
+type Theme =
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "ghost"
+  | "outline"
+  | "link"
+  | "default";
 
 type Props = {
   label: string;
-  theme?: "primary" | "secondary" | "muted" | "ghost" | "outline" | "link";
+  theme?: Theme;
   onPress?: () => void;
   icon?: React.FC<SvgProps>;
+  disabled?: boolean;
 };
 
-export default function Button({ label, theme, onPress, icon }: Props) {
-  const Icon = icon;
+type ThemeConfig = {
+  button: ViewStyle;
+  label: TextStyle;
+};
 
-  if (theme === "primary") {
-    return (
-      <Pressable
-        style={[styles.button, { backgroundColor: Colors.primary }]}
-        onPress={onPress}
-      >
-        <Text
-          style={[
-            styles.buttonLabel,
-            {
-              color: Colors.primaryForeground,
-              fontSize: 12,
-              fontWeight: "light",
-            },
-          ]}
-        >
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
-  if (theme === "secondary") {
-    return (
-      <Pressable
-        style={[styles.button, { backgroundColor: Colors.secondary }]}
-        onPress={onPress}
-      >
-        <Text
-          style={[styles.buttonLabel, { color: Colors.secondaryForeground }]}
-        >
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
-  if (theme === "muted") {
-    return (
-      <Pressable
-        style={[styles.button, { backgroundColor: Colors.muted }]}
-        onPress={onPress}
-      >
-        <Text style={[styles.buttonLabel, { color: Colors.mutedForeground }]}>
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
-  if (theme === "ghost") {
-    return (
-      <Pressable
-        style={[styles.button, { backgroundColor: "none" }]}
-        onPress={onPress}
-      >
-        <Text style={[styles.buttonLabel, { color: Colors.foreground }]}>
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
-  if (theme === "outline") {
-    return (
-      <Pressable
-        style={[
-          styles.button,
-          styles.shadow,
-          {
-            backgroundColor: "none",
-            borderColor: Colors.border,
-            height: 35,
-          },
-        ]}
-        onPress={onPress}
-      >
-        <Text
-          style={[
-            styles.buttonLabel,
-            { color: Colors.foreground, fontSize: 14 },
-          ]}
-        >
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
-  if (theme === "link") {
-    return (
-      <Pressable
-        style={[styles.button, { backgroundColor: "none", borderWidth: 0 }]}
-        onPress={onPress}
-      >
-        <Text
-          style={[
-            styles.buttonLabel,
-            {
-              color: Colors.primary,
-              textAlign: "left",
-              width: "100%",
-              fontSize: 12,
-            },
-          ]}
-        >
-          {Icon && <Icon style={styles.buttonIcon} />}
-          {label}
-        </Text>
-      </Pressable>
-    );
-  }
+const themeStyles: Record<Theme, ThemeConfig> = {
+  primary: {
+    button: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+    label: {
+      color: Colors.primaryForeground,
+      fontWeight: "300",
+    },
+  },
+  secondary: {
+    button: {
+      backgroundColor: Colors.secondary,
+      borderColor: Colors.secondary,
+    },
+    label: { color: Colors.secondaryForeground },
+  },
+  muted: {
+    button: { backgroundColor: Colors.muted, borderColor: Colors.muted },
+    label: { color: Colors.mutedForeground },
+  },
+  ghost: {
+    button: { backgroundColor: "transparent", borderColor: "transparent" },
+    label: { color: Colors.foreground },
+  },
+  outline: {
+    button: {
+      backgroundColor: "transparent",
+      borderColor: Colors.border,
+    },
+    label: { color: Colors.foreground, fontSize: 14 },
+  },
+  link: {
+    button: {
+      backgroundColor: "transparent",
+      borderWidth: 0,
+      boxShadow: "0px",
+    },
+    label: {
+      color: Colors.primary,
+      textAlign: "left",
+      width: "100%",
+      fontSize: 14,
+    },
+  },
+  default: {
+    button: { backgroundColor: Colors.card },
+    label: { color: Colors.cardForeground },
+  },
+};
+
+export default function Button({
+  label,
+  theme = "default",
+  onPress,
+  icon,
+  disabled,
+}: Props) {
+  const Icon = icon;
+  const { button: buttonThemeStyle, label: labelThemeStyle } =
+    themeStyles[theme];
+
+  const disabledOpacity = theme === "link" ? 0.8 : 0.5;
 
   return (
     <Pressable
-      style={[styles.button, { backgroundColor: Colors.card }]}
+      style={[
+        styles.button,
+        buttonThemeStyle,
+        disabled && { opacity: disabledOpacity },
+      ]}
       onPress={onPress}
+      disabled={disabled}
     >
-      {Icon && <Icon style={styles.buttonIcon} />}
-      <Text style={styles.buttonLabel}>{label}</Text>
+      {Icon && (
+        <Icon style={[styles.buttonIcon, disabled && { opacity: 0.5 }]} />
+      )}
+      <Text
+        style={[
+          styles.buttonLabel,
+          labelThemeStyle,
+          disabled && { opacity: 0.5 },
+        ]}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    borderColor: Colors.secondary,
     borderWidth: 1,
     borderRadius: 6,
     width: "100%",
-    height: 30,
+    height: 32,
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: Colors.shadow,
     marginVertical: 3,
     padding: 5,
+    boxShadow: "0px 2px 3px #00000028",
+    gap: 5,
+    fontSize: 14,
   },
   buttonLabel: {
     color: Colors.foreground,
-    fontSize: 16,
+    fontSize: 14,
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "center",
     gap: 2,
   },
   buttonIcon: {
-    marginRight: 8,
     width: 14,
     height: 14,
-  },
-  shadow: {
-    shadowColor: "#00000028",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 2,
-    boxShadow: "0px 2px 3px #00000028",
   },
 });

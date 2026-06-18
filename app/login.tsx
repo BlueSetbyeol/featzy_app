@@ -1,16 +1,16 @@
 import Logo from "@/assets/images/logo_white.svg";
-import LoginTab from "@/components/LogInTab";
-import SignInTab from "@/components/SignInTab";
+import LoginTab from "@/components/Auth/LogInTab";
+import SignInTab from "@/components/Auth/SignInTab";
 import Tab from "@/components/ui/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
 import { useState } from "react";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function Login() {
   const { width, height } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const [fontsLoaded] = useFonts({
     Mudstone: require("@/assets/fonts/Mudstone.otf"),
   });
@@ -21,51 +21,61 @@ export default function Login() {
   if (!fontsLoaded) return null;
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingTop: insets.top, width: width, height: height },
-      ]}
-    >
-      <Logo style={styles.image} />
-      <Text style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}>
-        Partager un repas, c’est eazy
-      </Text>
-
-      <View
-        style={[
-          styles.card,
-          {
-            width: width * 0.9,
-            height: height * 0.6,
-            backgroundColor: Colors.card,
-          },
-        ]}
+    <GestureHandlerRootView style={styles.container}>
+      <KeyboardAwareScrollView
+        bottomOffset={40}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
+        <Logo style={styles.image} />
+        <Text style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}>
+          Partager un repas, c’est eazy
+        </Text>
+
         <View
           style={[
-            styles.tabsContainer,
-            { width: width * 0.81, height: height * 0.06 },
+            styles.card,
+            {
+              width: width * 0.9,
+              height: height * 0.6,
+              backgroundColor: Colors.card,
+            },
           ]}
         >
-          <Tab
-            label="Connexion"
-            selected={connectionOrInscription === "connexion"}
-            onPress={() => {
-              setConnectionOrInscription("connexion");
-            }}
-          />
-          <Tab
-            label="Inscription"
-            selected={connectionOrInscription === "inscription"}
-            onPress={() => {
-              setConnectionOrInscription("inscription");
-            }}
-          />
+          <View
+            style={[
+              styles.tabsContainer,
+              { width: width * 0.81, height: height * 0.06 },
+            ]}
+          >
+            <Tab
+              label="Connexion"
+              selected={connectionOrInscription === "connexion"}
+              onPress={() => {
+                setConnectionOrInscription("connexion");
+              }}
+              numberOfTabs={2}
+            />
+            <Tab
+              label="Inscription"
+              selected={connectionOrInscription === "inscription"}
+              onPress={() => {
+                setConnectionOrInscription("inscription");
+              }}
+              numberOfTabs={2}
+            />
+          </View>
+          {connectionOrInscription === "connexion" ? (
+            <LoginTab />
+          ) : (
+            <SignInTab />
+          )}
         </View>
-        {connectionOrInscription === "connexion" ? <LoginTab /> : <SignInTab />}
-      </View>
-    </View>
+      </KeyboardAwareScrollView>
+    </GestureHandlerRootView>
   );
 }
 
@@ -100,6 +110,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.muted,
     borderRadius: 6,
+    gap: 2,
+    paddingHorizontal: 10,
   },
   input_label: {
     color: Colors.foreground,

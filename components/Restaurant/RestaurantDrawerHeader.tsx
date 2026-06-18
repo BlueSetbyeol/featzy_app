@@ -15,7 +15,7 @@ import { useContext, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 
-const Placeholder = require("@/assets/images/dish.svg");
+import Placeholder from "@/assets/images/dish.svg";
 
 interface RestaurantDrawerHeaderProps {
   restaurant: Restaurant;
@@ -90,15 +90,15 @@ export default function RestaurantDrawerHeader({
         </Badge>
       )}
 
-      <Image
-        source={{
-          uri: restaurant.media.cover
-            ? { uri: restaurant.media.cover }
-            : Placeholder,
-        }}
-        style={styles.cover}
-        resizeMode="cover"
-      />
+      {restaurant.media.cover ? (
+        <Image
+          source={{ uri: restaurant.media.cover }}
+          style={styles.cover}
+          resizeMode="cover"
+        />
+      ) : (
+        <Placeholder style={styles.cover} />
+      )}
 
       <View style={styles.infoSection}>
         <View style={styles.titleRow}>
@@ -165,11 +165,12 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
   },
   cover: {
-    width: "100%",
-    height: 180,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
+    width: 362,
+    height: 225,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     marginBottom: 16,
+    marginTop: 8,
   },
   infoSection: {
     width: "100%",

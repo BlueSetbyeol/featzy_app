@@ -11,7 +11,7 @@ export default function Label({ children }: Props) {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "500",
     color: Colors.foreground,
     marginBottom: 4,
