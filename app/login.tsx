@@ -1,11 +1,22 @@
 import Logo from "@/assets/images/logo_white.svg";
-import LoginTab from "@/components/LogInTab";
-import SignInTab from "@/components/SignInTab";
+import LoginTab from "@/components/Auth/LogInTab";
+import SignInTab from "@/components/Auth/SignInTab";
 import Tab from "@/components/ui/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
 import { useState } from "react";
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import {
+  GestureHandlerRootView,
+  ScrollView,
+} from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Login() {
@@ -21,51 +32,68 @@ export default function Login() {
   if (!fontsLoaded) return null;
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingTop: insets.top, width: width, height: height },
-      ]}
-    >
-      <Logo style={styles.image} />
-      <Text style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}>
-        Partager un repas, c’est eazy
-      </Text>
-
-      <View
-        style={[
-          styles.card,
-          {
-            width: width * 0.9,
-            height: height * 0.6,
-            backgroundColor: Colors.card,
-          },
-        ]}
+    <GestureHandlerRootView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1, height: height }}
       >
-        <View
-          style={[
-            styles.tabsContainer,
-            { width: width * 0.81, height: height * 0.06 },
-          ]}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <Tab
-            label="Connexion"
-            selected={connectionOrInscription === "connexion"}
-            onPress={() => {
-              setConnectionOrInscription("connexion");
-            }}
-          />
-          <Tab
-            label="Inscription"
-            selected={connectionOrInscription === "inscription"}
-            onPress={() => {
-              setConnectionOrInscription("inscription");
-            }}
-          />
-        </View>
-        {connectionOrInscription === "connexion" ? <LoginTab /> : <SignInTab />}
-      </View>
-    </View>
+          <Logo style={styles.image} />
+          <Text
+            style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}
+          >
+            Partager un repas, c’est eazy
+          </Text>
+
+          <View
+            style={[
+              styles.card,
+              {
+                width: width * 0.9,
+                height: height * 0.6,
+                backgroundColor: Colors.card,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.tabsContainer,
+                { width: width * 0.81, height: height * 0.06 },
+              ]}
+            >
+              <Tab
+                label="Connexion"
+                selected={connectionOrInscription === "connexion"}
+                onPress={() => {
+                  setConnectionOrInscription("connexion");
+                }}
+                numberOfTabs={2}
+              />
+              <Tab
+                label="Inscription"
+                selected={connectionOrInscription === "inscription"}
+                onPress={() => {
+                  setConnectionOrInscription("inscription");
+                }}
+                numberOfTabs={2}
+              />
+            </View>
+            {connectionOrInscription === "connexion" ? (
+              <LoginTab />
+            ) : (
+              <SignInTab />
+            )}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </GestureHandlerRootView>
   );
 }
 
@@ -100,6 +128,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.muted,
     borderRadius: 6,
+    gap: 2,
+    paddingHorizontal: 10,
   },
   input_label: {
     color: Colors.foreground,

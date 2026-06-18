@@ -37,6 +37,7 @@ export default function MapScreen() {
       cancelled = true;
     };
   }, [query]);
+
   return (
     <View style={styles.container}>
       <SearchingLoc />

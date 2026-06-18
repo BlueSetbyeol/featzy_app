@@ -14,6 +14,7 @@ export default function Drawer({ open, setOpen, children }: Props) {
       transparent
       animationType="slide"
       onRequestClose={() => setOpen(false)}
+      statusBarTranslucent
     >
       <View style={styles.container}>
         <Pressable style={styles.overlay} onPress={() => setOpen(false)} />

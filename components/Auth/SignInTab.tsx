@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import * as z from "zod";
-import Button from "./ui/Button";
+import Button from "../ui/Button";
 
 export default function SignInTab() {
   const { width, height } = useWindowDimensions();
@@ -56,8 +56,18 @@ export default function SignInTab() {
 
   return (
     <View style={[{ width: width * 0.81, alignItems: "center" }]}>
-      <Button label="Continuer avec Google" theme="outline" icon={Google} />
-      <Button label="Continuer avec Apple" theme="outline" icon={Apple} />
+      <Button
+        label="Continuer avec Google"
+        theme="outline"
+        icon={Google}
+        disabled={true}
+      />
+      <Button
+        label="Continuer avec Apple"
+        theme="outline"
+        icon={Apple}
+        disabled={true}
+      />
       <View
         style={[
           {

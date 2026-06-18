@@ -47,7 +47,7 @@ export default function RestaurantDrawerContent({
       <View
         style={[
           styles.tabsContainer,
-          { width: width * 0.81, height: height * 0.06 },
+          { width: width * 0.9, height: height * 0.06 },
         ]}
       >
         <Tab
@@ -56,6 +56,7 @@ export default function RestaurantDrawerContent({
           onPress={() => {
             setTabToShow("menu");
           }}
+          numberOfTabs={4}
         />
         <Tab
           label="Avis"
@@ -63,6 +64,7 @@ export default function RestaurantDrawerContent({
           onPress={() => {
             setTabToShow("review");
           }}
+          numberOfTabs={4}
         />
         <Tab
           label="Photos"
@@ -70,6 +72,7 @@ export default function RestaurantDrawerContent({
           onPress={() => {
             setTabToShow("photos");
           }}
+          numberOfTabs={4}
         />
         <Tab
           label="A propos"
@@ -77,6 +80,7 @@ export default function RestaurantDrawerContent({
           onPress={() => {
             setTabToShow("a_propos");
           }}
+          numberOfTabs={4}
         />
       </View>
 
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: Colors.background,
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
     gap: 8,
   },
   tabsContainer: {
@@ -107,6 +111,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.muted,
     borderRadius: 6,
+    gap: 2,
+    paddingHorizontal: 10,
   },
   tab: {
     marginVertical: 8,
