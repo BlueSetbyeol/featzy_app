@@ -161,5 +161,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.border,
     color: Colors.mutedForeground,
+    height: 32,
   },
 });

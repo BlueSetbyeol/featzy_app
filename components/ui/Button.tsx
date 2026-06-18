@@ -35,7 +35,6 @@ const themeStyles: Record<Theme, ThemeConfig> = {
     button: { backgroundColor: Colors.primary, borderColor: Colors.primary },
     label: {
       color: Colors.primaryForeground,
-      fontSize: 12,
       fontWeight: "300",
     },
   },
@@ -58,7 +57,6 @@ const themeStyles: Record<Theme, ThemeConfig> = {
     button: {
       backgroundColor: "transparent",
       borderColor: Colors.border,
-      height: 35,
     },
     label: { color: Colors.foreground, fontSize: 14 },
   },
@@ -72,7 +70,7 @@ const themeStyles: Record<Theme, ThemeConfig> = {
       color: Colors.primary,
       textAlign: "left",
       width: "100%",
-      fontSize: 12,
+      fontSize: 14,
     },
   },
   default: {
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     width: "100%",
-    height: 30,
+    height: 32,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -134,10 +132,11 @@ const styles = StyleSheet.create({
     padding: 5,
     boxShadow: "0px 2px 3px #00000028",
     gap: 5,
+    fontSize: 14,
   },
   buttonLabel: {
     color: Colors.foreground,
-    fontSize: 16,
+    fontSize: 14,
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "center",

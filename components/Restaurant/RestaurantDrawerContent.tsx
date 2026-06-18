@@ -99,7 +99,6 @@ export default function RestaurantDrawerContent({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     backgroundColor: Colors.background,
     justifyContent: "center",
     alignItems: "center",

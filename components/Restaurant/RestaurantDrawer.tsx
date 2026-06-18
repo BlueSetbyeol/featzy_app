@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-    paddingHorizontal: 24,
   },
   scrollContent: {
     paddingBottom: 16,
+    paddingHorizontal: 24,
   },
   footer: {
     paddingHorizontal: 16,

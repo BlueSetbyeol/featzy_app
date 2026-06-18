@@ -12,6 +12,7 @@ import { useFonts } from "@expo-google-fonts/lato/useFonts";
 import { Lexend_300Light } from "@expo-google-fonts/lexend/300Light";
 import { Lexend_400Regular } from "@expo-google-fonts/lexend/400Regular";
 import { Lexend_700Bold } from "@expo-google-fonts/lexend/700Bold";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
@@ -58,17 +59,19 @@ export default function RootLayout() {
 
   return (
     <>
-      <GeoProvider>
-        <LoginProvider>
-          <SafeAreaProvider style={{ height: "100%" }}>
-            <SafeAreaView style={{ height: "100%" }}>
-              <Slot />
-              <StatusBar style="auto" />
-            </SafeAreaView>
-          </SafeAreaProvider>
-        </LoginProvider>
-        <Toast key="global-toast" />
-      </GeoProvider>
+      <KeyboardProvider>
+        <GeoProvider>
+          <LoginProvider>
+            <SafeAreaProvider style={{ height: "100%" }}>
+              <SafeAreaView style={{ height: "100%" }}>
+                <Slot />
+                <StatusBar style="auto" />
+              </SafeAreaView>
+            </SafeAreaProvider>
+          </LoginProvider>
+          <Toast key="global-toast" />
+        </GeoProvider>
+      </KeyboardProvider>
     </>
   );
 }

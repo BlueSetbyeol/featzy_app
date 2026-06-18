@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
   },
   cover: {
-    width: "100%",
-    height: 180,
+    width: 362,
+    height: 225,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     marginBottom: 16,

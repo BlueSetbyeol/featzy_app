@@ -1,9 +1,13 @@
+import Logo from "@/assets/images/logo_white.svg";
+import { Colors } from "@/constants/Colors";
+import { Typography } from "@/constants/Typography";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function ReservationScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Reservation screen</Text>
+      <Logo style={styles.image} />
+      <Text style={styles.text}>Coming soon !</Text>
     </View>
   );
 }
@@ -11,11 +15,17 @@ export default function ReservationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
+    backgroundColor: Colors.background,
     justifyContent: "center",
     alignItems: "center",
+    gap: 3,
+  },
+  image: {
+    width: 200,
+    height: 73,
   },
   text: {
-    color: "#fff",
+    color: Colors.foreground,
+    fontFamily: Typography.Lato_700Bold,
   },
 });

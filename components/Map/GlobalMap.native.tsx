@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
   previewText: {
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 20,
     letterSpacing: 0.2,
     color: Colors.foreground,

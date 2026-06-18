@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   label: {
-    fontSize: 13,
+    fontSize: 14,
   },
 });

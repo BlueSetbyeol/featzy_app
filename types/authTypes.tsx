@@ -1,10 +1,11 @@
 export type AuthUser = {
   id: string;
-  firstname: string;
-  lastname: string;
+  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   email_verified_at: string | null;
-  profile_picture_url: string | null;
+  avatar_url: string | null;
   phone_number: string | null;
   is_active: boolean;
   role?: string | null;

@@ -5,23 +5,12 @@ import Tab from "@/components/ui/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
 import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import {
-  GestureHandlerRootView,
-  ScrollView,
-} from "react-native-gesture-handler";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function Login() {
   const { width, height } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const [fontsLoaded] = useFonts({
     Mudstone: require("@/assets/fonts/Mudstone.otf"),
   });
@@ -33,66 +22,59 @@ export default function Login() {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1, height: height }}
+      <KeyboardAwareScrollView
+        bottomOffset={40}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Logo style={styles.image} />
-          <Text
-            style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}
-          >
-            Partager un repas, c’est eazy
-          </Text>
+        <Logo style={styles.image} />
+        <Text style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}>
+          Partager un repas, c’est eazy
+        </Text>
 
+        <View
+          style={[
+            styles.card,
+            {
+              width: width * 0.9,
+              height: height * 0.6,
+              backgroundColor: Colors.card,
+            },
+          ]}
+        >
           <View
             style={[
-              styles.card,
-              {
-                width: width * 0.9,
-                height: height * 0.6,
-                backgroundColor: Colors.card,
-              },
+              styles.tabsContainer,
+              { width: width * 0.81, height: height * 0.06 },
             ]}
           >
-            <View
-              style={[
-                styles.tabsContainer,
-                { width: width * 0.81, height: height * 0.06 },
-              ]}
-            >
-              <Tab
-                label="Connexion"
-                selected={connectionOrInscription === "connexion"}
-                onPress={() => {
-                  setConnectionOrInscription("connexion");
-                }}
-                numberOfTabs={2}
-              />
-              <Tab
-                label="Inscription"
-                selected={connectionOrInscription === "inscription"}
-                onPress={() => {
-                  setConnectionOrInscription("inscription");
-                }}
-                numberOfTabs={2}
-              />
-            </View>
-            {connectionOrInscription === "connexion" ? (
-              <LoginTab />
-            ) : (
-              <SignInTab />
-            )}
+            <Tab
+              label="Connexion"
+              selected={connectionOrInscription === "connexion"}
+              onPress={() => {
+                setConnectionOrInscription("connexion");
+              }}
+              numberOfTabs={2}
+            />
+            <Tab
+              label="Inscription"
+              selected={connectionOrInscription === "inscription"}
+              onPress={() => {
+                setConnectionOrInscription("inscription");
+              }}
+              numberOfTabs={2}
+            />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          {connectionOrInscription === "connexion" ? (
+            <LoginTab />
+          ) : (
+            <SignInTab />
+          )}
+        </View>
+      </KeyboardAwareScrollView>
     </GestureHandlerRootView>
   );
 }
