@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     boxShadow: Colors.shadow,
     marginVertical: 3,
+    padding: 5,
   },
   buttonLabel: {
     color: Colors.foreground,

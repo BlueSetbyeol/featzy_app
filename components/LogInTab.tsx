@@ -1,6 +1,6 @@
 import authApi from "@/api/authApi";
-import Apple from "@/assets/images/icon/apple.svg";
-import Google from "@/assets/images/icon/googlepay.svg";
+import Apple from "@/assets/icon/apple.svg";
+import Google from "@/assets/icon/googlepay.svg";
 import { Colors } from "@/constants/Colors";
 import AuthContext from "@/contexts/AuthContext";
 import { LoginUserSchema } from "@/services/userSchema";
@@ -18,7 +18,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import * as z from "zod";
-import Button from "./Button";
+import Button from "./ui/Button";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -103,6 +103,12 @@ export default function LoginTab() {
               placeholder="••••••••"
               keyboardType="default"
               secureTextEntry={true}
+              onSubmitEditing={LoginForm.handleSubmit(loginUser, (errors) => {
+                Toast.show({
+                  type: "error",
+                  text1: "Veuillez remplir tous les champs",
+                });
+              })}
             />
           </>
         )}
