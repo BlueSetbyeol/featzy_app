@@ -58,3 +58,21 @@ export type ResetPasswordPayload = {
   password: string;
   password_confirmation: string;
 };
+
+export type ChangePasswordPayload = {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+};
+
+export type UpdateProfilePayload = {
+  first_name?: string;
+  last_name?: string;
+  phone?: string | null;
+};
+
+export type AvatarUploadFile = {
+  uri: string;
+  name: string;
+  type: string;
+};

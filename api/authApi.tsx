@@ -4,11 +4,14 @@ import api from "../lib/axios";
 import {
   AuthResponse,
   AuthUser,
+  AvatarUploadFile,
+  ChangePasswordPayload,
   ForgotPasswordPayload,
   LoginPayload,
   RegisterPayload,
   ResetPasswordPayload,
   Session,
+  UpdateProfilePayload,
   VerifyEmailPayload,
 } from "../types/authTypes";
 
@@ -140,6 +143,44 @@ const authApi = {
     } catch {
       throw new Error("Impossible de révoquer toutes les sessions");
     }
+  },
+
+  // user's specifics
+  updateProfile: async (payload: UpdateProfilePayload): Promise<AuthUser> => {
+    const { data } = await api.patch<{ data: AuthUser }>("/me", payload);
+    return data.data;
+  },
+
+  changePassword: async (payload: ChangePasswordPayload): Promise<void> => {
+    try {
+      const { data } = await api.put("/me/password", payload);
+
+      // Persist the token so the interceptor picks it up on future requests
+      await tokenStorage.set("token", data.token);
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || "Identifiants incorrects";
+        throw new Error(message);
+      }
+      throw new Error("Une erreur est survenue");
+    }
+  },
+
+  uploadAvatar: async (file: AvatarUploadFile): Promise<AuthUser> => {
+    const formData = new FormData();
+    formData.append("file", file as unknown as Blob);
+    const { data } = await api.post<{ data: AuthUser }>(
+      "/me/avatar",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        transformRequest: (data) => data, // bypass the default JSON.stringify
+      },
+    );
+    return data.data;
   },
 };
 
