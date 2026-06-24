@@ -21,7 +21,7 @@ export default function RestaurantDrawer({
   profileList,
 }: RestaurantDrawerProps) {
   return (
-    <Drawer open={open} setOpen={setOpen} key={restaurant.id}>
+    <Drawer open={open} setOpen={setOpen} key={restaurant.id} height="80%">
       <View style={styles.content}>
         <RestaurantDrawerHeader
           restaurant={restaurant}

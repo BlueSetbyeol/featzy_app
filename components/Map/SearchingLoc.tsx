@@ -16,6 +16,8 @@ import {
   View,
 } from "react-native";
 import RestaurantFilters from "../Restaurant/RestaurantFilter";
+import Button from "../ui/Button";
+import Drawer from "../ui/Drawer";
 
 const GMKey = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -178,38 +180,37 @@ export default function SearchingLoc({ onFiltersApply }: SearchingLocProps) {
 
       <Modal
         visible={dialogVisible}
-        transparent
-        animationType="slide"
         onRequestClose={() => setDialogVisible(false)}
+        transparent={true}
+        animationType="fade"
+        statusBarTranslucent
       >
-        <View style={styles.modalOverlay}>
+        <Drawer open={dialogVisible} setOpen={setDialogVisible} height="35%">
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Lieu choisi</Text>
             <Text style={styles.modalDescription}>
               Autorisation de géolocalisation
             </Text>
             <Text style={styles.modalBody}>
-              Pour que nous puissions trouver les restaurants dans votre
-              proximité, nous avons besoin de votre autorisation de
-              géolocalisation. Ces informations ne seront pas mémorisées et ne
-              serviront que le temps de votre session.
+              Pour que nous puissions trouver les restaurants à proximité, nous
+              avons besoin de votre autorisation de géolocalisation. Ces
+              informations ne seront pas mémorisées et ne serviront que le temps
+              de votre session.
             </Text>
             <View style={styles.modalFooter}>
-              <TouchableOpacity
+              <Button
+                label={"Saisir une adresse manuellement"}
+                theme={"outline"}
                 onPress={() => setDialogVisible(false)}
-                style={styles.modalButtonOutline}
-              >
-                <Text>Saisir une adresse manuellement</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <Button
+                label={"Accepter"}
+                theme={"primary"}
                 onPress={handleUseCurrentLocation}
-                style={styles.modalButtonDefault}
-              >
-                <Text style={{ color: "#fff" }}>Accepter</Text>
-              </TouchableOpacity>
+              />
             </View>
           </View>
-        </View>
+        </Drawer>
       </Modal>
     </View>
   );
@@ -271,18 +272,5 @@ const styles = StyleSheet.create({
   modalTitle: { fontSize: 18, fontWeight: "bold" },
   modalDescription: { color: "#666", marginBottom: 12 },
   modalBody: { marginBottom: 20, lineHeight: 20 },
-  modalFooter: { flexDirection: "row", justifyContent: "flex-end", gap: 8 },
-  modalButtonOutline: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 6,
-  },
-  modalButtonDefault: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    backgroundColor: "#000",
-    borderRadius: 6,
-  },
+  modalFooter: { flexDirection: "column", gap: 8 },
 });

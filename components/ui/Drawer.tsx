@@ -5,9 +5,10 @@ type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   children: React.ReactNode;
+  height: number | `${number}%`;
 };
 
-export default function Drawer({ open, setOpen, children }: Props) {
+export default function Drawer({ open, setOpen, children, height }: Props) {
   return (
     <Modal
       visible={open}
@@ -18,7 +19,7 @@ export default function Drawer({ open, setOpen, children }: Props) {
     >
       <View style={styles.container}>
         <Pressable style={styles.overlay} onPress={() => setOpen(false)} />
-        <View style={styles.sheet}>{children}</View>
+        <View style={[styles.sheet, { height }]}>{children}</View>
       </View>
     </Modal>
   );
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
   },
   sheet: {
-    height: "85%",
     backgroundColor: Colors.background,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
