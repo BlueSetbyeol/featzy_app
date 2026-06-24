@@ -7,6 +7,7 @@ import { ChangeUserSchema } from "@/services/userSchema";
 import { UpdateProfilePayload } from "@/types/authTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as ImagePicker from "expo-image-picker";
+import { StatusBar } from "expo-status-bar";
 import { Pen } from "lucide-react-native";
 import { useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -149,9 +150,9 @@ export default function ProfilScreen() {
         height: height,
         alignItems: "center",
         backgroundColor: Colors.background,
-        paddingTop: 30,
       }}
     >
+      <StatusBar animated={true} backgroundColor="#860909" translucent={true} />
       <View style={styles.profileSection}>
         <Pressable onPress={pickImageAsync}>
           <Pen style={styles.editIcon} />
