@@ -7,7 +7,7 @@ import { LoginUserSchema } from "@/services/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   StyleSheet,
@@ -48,6 +48,8 @@ export default function LoginTab() {
       Toast.show({ type: "error", text1: "Une erreur est survenue" });
     }
   }
+
+  const passwordRef = useRef<TextInput>(null);
 
   return (
     <View style={[{ width: width * 0.81, alignItems: "center" }]}>
@@ -91,6 +93,8 @@ export default function LoginTab() {
               placeholder="exemple@mail.com"
               keyboardType="email-address"
               autoComplete={"email"}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current?.focus()}
             />
           </>
         )}
@@ -104,6 +108,7 @@ export default function LoginTab() {
               Mot de passe
             </Text>
             <TextInput
+              ref={passwordRef}
               style={[
                 styles.input,
                 { width: width * 0.81, height: height * 0.055 },

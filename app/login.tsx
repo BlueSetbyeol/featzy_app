@@ -4,6 +4,7 @@ import SignInTab from "@/components/Auth/SignInTab";
 import Tab from "@/components/ui/Tab";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -30,6 +31,11 @@ export default function Login() {
           alignItems: "center",
         }}
       >
+        <StatusBar
+          animated={true}
+          backgroundColor="#860909"
+          translucent={true}
+        />
         <Logo style={styles.image} />
         <Text style={[styles.slogan, { fontFamily: "Mudstone", fontSize: 20 }]}>
           Partager un repas, c’est eazy
