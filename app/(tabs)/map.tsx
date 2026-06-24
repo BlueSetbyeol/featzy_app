@@ -4,6 +4,7 @@ import SearchingLoc from "@/components/Map/SearchingLoc";
 import { Colors } from "@/constants/Colors";
 import { extractApiError } from "@/lib/axios";
 import { Restaurant } from "@/types/restaurantTypes";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Toast from "react-native-toast-message";
@@ -40,6 +41,7 @@ export default function MapScreen() {
 
   return (
     <View style={styles.container}>
+      <StatusBar animated={true} backgroundColor="#860909" translucent={true} />
       <SearchingLoc />
       <GlobalMap restaurants={restaurants} />
     </View>
