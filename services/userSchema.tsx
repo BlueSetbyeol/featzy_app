@@ -1,15 +1,14 @@
 import { z } from "zod";
 
 export const ChangeUserSchema = z.object({
-  firstname: z
+  first_name: z
     .string()
     .min(1, { message: "Merci de saisir votre prénom" })
     .min(3, { message: "La saisie doit avoir au moins 3 caractères" }),
-  lastname: z
+  last_name: z
     .string()
     .min(1, { message: "Merci de saisir votre nom de famille" })
     .min(3, { message: "La saisie doit avoir au moins 3 caractères" }),
-  email: z.email().min(1, { message: "Merci de saisir votre adresse email" }),
   phone_number: z
     .string()
     .min(1, { message: "Merci de saisir votre numéro de téléphone" })

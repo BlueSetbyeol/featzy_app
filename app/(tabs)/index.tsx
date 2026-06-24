@@ -54,6 +54,24 @@ export default function Index() {
     };
   }, [query]);
 
+  useEffect(() => {
+    if (userCenter) {
+      const sorted = restaurants
+        .map((restaurant) => ({
+          ...restaurant,
+          distance: getDistanceLabel(
+            { latitude: userCenter.latitude, longitude: userCenter.longitude },
+            restaurant,
+          ),
+        }))
+        .sort(
+          (a, b) =>
+            Number(a.distance.slice(0, -2)) - Number(b.distance.slice(0, -2)),
+        );
+      setRestaurants(sorted);
+    }
+  }, [userCenter]);
+
   const [drawerRestaurant, setDrawerRestaurant] = useState<Restaurant | null>(
     null,
   );
@@ -98,6 +116,8 @@ export default function Index() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          paddingHorizontal: 10,
+          paddingBottom: 6,
         }}
       >
         <View>
@@ -170,6 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 3,
+    paddingHorizontal: 16,
   },
   hero: {
     width: "100%",
@@ -193,16 +214,15 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: Colors.card,
-    width: "98%",
+    width: "85%",
     boxShadow: "1px 1px 6px 1px #00000028",
-    padding: 10,
     borderRadius: 12,
     marginVertical: 10,
+    overflow: "hidden",
   },
   cardImage: {
-    width: 280,
-    height: 175,
-    borderRadius: 12,
+    width: "100%",
+    height: 155,
     marginBottom: 8,
   },
   cardTitle: {
@@ -210,6 +230,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 26,
     letterSpacing: 0.2,
+    paddingHorizontal: 10,
   },
   cardText: {
     fontSize: 12,
@@ -225,20 +246,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.foreground,
-  },
-  imageContainer: {
-    flex: 1,
-  },
-  footerContainer: {
-    flex: 1 / 3,
-    alignItems: "center",
-  },
-  optionsContainer: {
-    position: "absolute",
-    bottom: 80,
-  },
-  optionsRow: {
-    alignItems: "center",
-    flexDirection: "row",
   },
 });
