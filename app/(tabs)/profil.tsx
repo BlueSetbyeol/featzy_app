@@ -1,17 +1,18 @@
 import authApi from "@/api/authApi";
 import Button from "@/components/ui/Button";
-import Dialog from "@/components/ui/Dialog";
-import ProfileImagePicker from "@/components/ui/ProfileImagePicker";
 import { Colors } from "@/constants/Colors";
 import AuthContext from "@/contexts/AuthContext";
 import { extractApiError } from "@/lib/axios";
 import { ChangeUserSchema } from "@/services/userSchema";
+import { UpdateProfilePayload } from "@/types/authTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as ImagePicker from "expo-image-picker";
-import { useContext, useState } from "react";
+import { Pen } from "lucide-react-native";
+import { useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Image,
+  Pressable,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -24,7 +25,7 @@ import {
 import Toast from "react-native-toast-message";
 import z from "zod";
 
-import Placeholder from "@/assets/images/julie_doublet.svg";
+const Placeholder = require("@/assets/images/portrait.jpeg");
 
 export default function ProfilScreen() {
   const { user, setUser } = useContext(AuthContext);
@@ -39,46 +40,47 @@ export default function ProfilScreen() {
     },
   });
 
-  const notify = () =>
-    Toast.show({
-      type: "success",
-      text1: "Informations changées !",
-      text2: "Tu peux te continuer",
-    });
+  useEffect(() => {
+    if (user) {
+      ChangeInformationForm.reset({
+        first_name: user.user.first_name ?? "",
+        last_name: user.user.last_name ?? "",
+        phone_number: user.user.phone_number ?? "",
+      });
+    }
+  }, [user]);
 
   async function onSubmit(data: z.infer<typeof ChangeUserSchema>) {
-    console.log(data);
+    const { dirtyFields } = ChangeInformationForm.formState;
+
+    const payload: Partial<UpdateProfilePayload> = {};
+    if (dirtyFields.first_name) payload.first_name = data.first_name;
+    if (dirtyFields.last_name) payload.last_name = data.last_name;
+    if (dirtyFields.phone_number) payload.phone = data.phone_number;
+
+    if (Object.keys(payload).length === 0) {
+      return;
+    }
+
     try {
-      const updated = await authApi.updateProfile({
-        first_name: data.first_name,
-        last_name: data.last_name,
-        phone: data.phone_number,
-      });
-      if (user) {
-        setUser({ ...user, user: updated });
-      }
+      const updated = await authApi.updateProfile(payload);
+      if (user) setUser({ ...user, user: updated });
       Toast.show({
         type: "success",
         text1: "Ton compte a bien été mis à jour.",
       });
     } catch (error) {
       const { message } = extractApiError(error);
-      Toast.show({
-        type: "error",
-        text1: message,
-      });
+      Toast.show({ type: "error", text1: message });
     }
   }
 
-  const [avatarPicked, setAvatarPicked] = useState<
-    ImagePicker.ImagePickerAsset | undefined
-  >();
   const AVATAR_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
   const AVATAR_MAX_SIZE = 5 * 1024 * 1024;
 
-  const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
-
-  async function handleUploadAvatar() {
+  async function handleUploadAvatar(
+    avatarPicked: ImagePicker.ImagePickerAsset,
+  ) {
     if (!avatarPicked) {
       Toast.show({
         type: "error",
@@ -110,6 +112,7 @@ export default function ProfilScreen() {
         name: avatarPicked.fileName ?? "avatar.jpg",
         type: mimeType,
       } as any);
+      console.log(updated);
 
       if (user) {
         setUser({ ...user, user: updated });
@@ -118,7 +121,6 @@ export default function ProfilScreen() {
         type: "success",
         text1: "Ta photo de profil a bien été mise à jour.",
       });
-      setAvatarDialogOpen(false);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -126,6 +128,19 @@ export default function ProfilScreen() {
       });
     }
   }
+
+  const pickImageAsync = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const asset = result.assets[0];
+      await handleUploadAvatar(asset);
+    }
+  };
 
   return (
     <GestureHandlerRootView
@@ -138,35 +153,25 @@ export default function ProfilScreen() {
       }}
     >
       <View style={styles.profileSection}>
-        {user && user.user.avatar_url ? (
-          <Image
-            source={{ uri: user.user.avatar_url }}
-            style={styles.profileImage}
-            resizeMode="cover"
-          />
-        ) : (
-          <Placeholder style={styles.profileImage} />
-        )}
-        <Button
-          label={"Changer la photo"}
-          theme={"link"}
-          onPress={() => setAvatarDialogOpen(true)}
-        />
+        <Pressable onPress={pickImageAsync}>
+          <Pen style={styles.editIcon} />
+          {user && user.user.avatar_url ? (
+            <Image
+              source={{ uri: user.user.avatar_url }}
+              style={styles.profileImage}
+              resizeMode="cover"
+              onLoad={() => console.log("Image loaded!")}
+              onError={(e) => console.log("Image error:", e.nativeEvent.error)}
+            />
+          ) : (
+            <Image
+              source={Placeholder}
+              style={styles.profileImage}
+              resizeMode="cover"
+            />
+          )}
+        </Pressable>
       </View>
-
-      <Dialog open={avatarDialogOpen} setOpen={setAvatarDialogOpen}>
-        <ProfileImagePicker
-          avatarPicked={avatarPicked}
-          setAvatarPicked={setAvatarPicked}
-        />
-        <Button
-          label={"Enregistrer la photo"}
-          theme={"primary"}
-          onPress={() => {
-            handleUploadAvatar();
-          }}
-        />
-      </Dialog>
 
       <View style={styles.identityCard}>
         <View style={{ alignItems: "center", width: width * 0.8 }}>
@@ -236,7 +241,7 @@ export default function ProfilScreen() {
             />
           </View>
         </View>
-        <View style={{ width: "100%", marginTop: 10 }}>
+        <View style={{ width: "100%", marginTop: 10, alignSelf: "stretch" }}>
           <Button
             label={"Modifier le mot de passe"}
             theme={"secondary"}
@@ -246,12 +251,10 @@ export default function ProfilScreen() {
             label={"Enregistrer mes informations"}
             theme={"primary"}
             onPress={ChangeInformationForm.handleSubmit(onSubmit, (errors) => {
-              if (!errors) {
-                notify;
-              }
+              const firstError = Object.values(errors)[0]?.message;
               Toast.show({
                 type: "error",
-                text1: "Veuillez remplir tous les champs",
+                text1: firstError ?? "Veuillez vérifier les champs.",
               });
             })}
           />
@@ -270,18 +273,34 @@ const styles = StyleSheet.create({
   },
   profileSection: {
     height: "25%",
-    display: "flex",
-    flexDirection: "column",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: Colors.primary,
+    marginBottom: 10,
+    paddingHorizontal: 20,
+    position: "relative",
   },
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: "50%",
+    borderRadius: 50,
+    borderColor: Colors.muted,
+    borderWidth: 3,
+    overflow: "hidden",
+  },
+  editIcon: {
+    position: "absolute",
+    top: -2,
+    right: -4,
+    color: Colors.primary,
+    backgroundColor: Colors.muted,
+    zIndex: 5,
+    borderRadius: 4,
   },
   identityCard: {
-    alignItems: "center",
+    width: "90%",
+    alignItems: "stretch",
     backgroundColor: Colors.card,
     boxShadow: "0px 2px 3px #00000028",
     borderWidth: 1,

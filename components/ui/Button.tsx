@@ -35,7 +35,7 @@ const themeStyles: Record<Theme, ThemeConfig> = {
     button: { backgroundColor: Colors.primary, borderColor: Colors.primary },
     label: {
       color: Colors.primaryForeground,
-      fontWeight: "300",
+      fontWeight: "400",
     },
   },
   secondary: {
@@ -46,8 +46,12 @@ const themeStyles: Record<Theme, ThemeConfig> = {
     label: { color: Colors.secondaryForeground },
   },
   muted: {
-    button: { backgroundColor: Colors.muted, borderColor: Colors.muted },
-    label: { color: Colors.mutedForeground },
+    button: {
+      backgroundColor: "transparent",
+      borderColor: "transparent",
+      boxShadow: "0px",
+    },
+    label: { color: Colors.muted, fontWeight: "500" },
   },
   ghost: {
     button: { backgroundColor: "transparent", borderColor: "transparent" },
