@@ -5,13 +5,20 @@ type Props = {
   label: string;
   selected: boolean;
   onPress?: () => void;
+  numberOfTabs: number;
 };
 
-export default function Tab({ label, selected, onPress }: Props) {
+export default function Tab({ label, selected, onPress, numberOfTabs }: Props) {
   if (selected) {
     return (
       <Pressable
-        style={[styles.button, { backgroundColor: Colors.background }]}
+        style={[
+          styles.button,
+          {
+            backgroundColor: Colors.background,
+            width: `${100 / numberOfTabs}%`,
+          },
+        ]}
         onPress={onPress}
       >
         <Text style={[styles.buttonLabel, { color: Colors.foreground }]}>
@@ -23,7 +30,10 @@ export default function Tab({ label, selected, onPress }: Props) {
 
   return (
     <Pressable
-      style={[styles.button, { backgroundColor: Colors.muted }]}
+      style={[
+        styles.button,
+        { backgroundColor: Colors.muted, width: `${100 / numberOfTabs}%` },
+      ]}
       onPress={onPress}
     >
       <Text style={styles.buttonLabel}>{label}</Text>
@@ -34,7 +44,6 @@ export default function Tab({ label, selected, onPress }: Props) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
-    width: "48%",
     height: 32,
     alignItems: "center",
     justifyContent: "center",

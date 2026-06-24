@@ -2,8 +2,8 @@ import { createContext, useState } from "react";
 import { Geolocation } from "../types/mapTypes";
 
 interface Coordinates {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
 
 interface Region extends Coordinates {

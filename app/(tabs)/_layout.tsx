@@ -1,21 +1,21 @@
-import Home from "@/assets/images/icon/home.svg";
+import Home from "@/assets/icon/home.svg";
 import { Colors } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
 
-import HomeSelected from "@/assets/images/icon/home_selected.svg";
-import Map from "@/assets/images/icon/map.svg";
-import MapSelected from "@/assets/images/icon/map_selected.svg";
-import Profil from "@/assets/images/icon/profil.svg";
-import ProfilSelected from "@/assets/images/icon/profil_selected.svg";
-import Resa from "@/assets/images/icon/reservation.svg";
-import ResaSelected from "@/assets/images/icon/reservation_selected.svg";
+import HomeSelected from "@/assets/icon/home_selected.svg";
+import Map from "@/assets/icon/map.svg";
+import MapSelected from "@/assets/icon/map_selected.svg";
+import Profil from "@/assets/icon/profil.svg";
+import ProfilSelected from "@/assets/icon/profil_selected.svg";
+import Resa from "@/assets/icon/reservation.svg";
+import ResaSelected from "@/assets/icon/reservation_selected.svg";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#ffffff",
+        tabBarActiveTintColor: Colors.background,
         headerShown: false,
         // headerStyle: {
         //   backgroundColor: Colors.primary,
@@ -23,9 +23,9 @@ export default function TabLayout() {
         // headerShadowVisible: false,
         // headerTintColor: "#fff",
         tabBarStyle: {
-          backgroundColor: Colors.background,
+          backgroundColor: Colors.primary,
           height: 80,
-          paddingTop: 5,
+          paddingTop: 15,
         },
         tabBarIconStyle: {
           alignItems: "center",

@@ -1,6 +1,6 @@
 import authApi from "@/api/authApi";
-import Apple from "@/assets/images/icon/apple.svg";
-import Google from "@/assets/images/icon/googlepay.svg";
+import Apple from "@/assets/icon/apple.svg";
+import Google from "@/assets/icon/googlepay.svg";
 import { Colors } from "@/constants/Colors";
 import AuthContext from "@/contexts/AuthContext";
 import { LoginUserSchema } from "@/services/userSchema";
@@ -18,7 +18,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import * as z from "zod";
-import Button from "./Button";
+import Button from "../ui/Button";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -51,8 +51,18 @@ export default function LoginTab() {
 
   return (
     <View style={[{ width: width * 0.81, alignItems: "center" }]}>
-      <Button label="Continuer avec Google" theme="outline" icon={Google} />
-      <Button label="Continuer avec Apple" theme="outline" icon={Apple} />
+      <Button
+        label="Continuer avec Google"
+        theme="outline"
+        icon={Google}
+        disabled={true}
+      />
+      <Button
+        label="Continuer avec Apple"
+        theme="outline"
+        icon={Apple}
+        disabled={true}
+      />
       <View
         style={[
           {
@@ -103,11 +113,17 @@ export default function LoginTab() {
               placeholder="••••••••"
               keyboardType="default"
               secureTextEntry={true}
+              onSubmitEditing={LoginForm.handleSubmit(loginUser, (errors) => {
+                Toast.show({
+                  type: "error",
+                  text1: "Veuillez remplir tous les champs",
+                });
+              })}
             />
           </>
         )}
       />
-      <Button label={"Mot de passe oublié ?"} theme={"link"} />
+      <Button label={"Mot de passe oublié ?"} theme={"link"} disabled={true} />
       <Button
         label={"Se connecter"}
         theme={"primary"}
@@ -145,5 +161,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.border,
     color: Colors.mutedForeground,
+    height: 32,
   },
 });

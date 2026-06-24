@@ -1,6 +1,6 @@
 import authApi from "@/api/authApi";
-import Apple from "@/assets/images/icon/apple.svg";
-import Google from "@/assets/images/icon/googlepay.svg";
+import Apple from "@/assets/icon/apple.svg";
+import Google from "@/assets/icon/googlepay.svg";
 import { Colors } from "@/constants/Colors";
 import { CreateUserSchema } from "@/services/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import * as z from "zod";
-import Button from "./Button";
+import Button from "../ui/Button";
 
 export default function SignInTab() {
   const { width, height } = useWindowDimensions();
@@ -56,8 +56,18 @@ export default function SignInTab() {
 
   return (
     <View style={[{ width: width * 0.81, alignItems: "center" }]}>
-      <Button label="Continuer avec Google" theme="outline" icon={Google} />
-      <Button label="Continuer avec Apple" theme="outline" icon={Apple} />
+      <Button
+        label="Continuer avec Google"
+        theme="outline"
+        icon={Google}
+        disabled={true}
+      />
+      <Button
+        label="Continuer avec Apple"
+        theme="outline"
+        icon={Apple}
+        disabled={true}
+      />
       <View
         style={[
           {
@@ -109,28 +119,48 @@ export default function SignInTab() {
             />
           </View>
         </View>
-        <Controller
-          control={registerForm.control}
-          name="email"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Text style={[styles.input_label, { width: width * 0.8 }]}>
-                Email
-              </Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  { width: width * 0.81, height: height * 0.055 },
-                ]}
-                onChangeText={onChange}
-                value={value}
-                placeholder="exemple@mail.com"
-                keyboardType="email-address"
-                autoComplete={"email"}
+        <View style={{ alignItems: "center" }}>
+          <View style={[styles.doubleContainer, { width: width * 0.8 }]}>
+            <View style={{ width: width * 0.39 }}>
+              <Controller
+                control={registerForm.control}
+                name="email"
+                render={({ field: { onChange, value } }) => (
+                  <>
+                    <Text style={[styles.input_label]}>Email</Text>
+                    <TextInput
+                      style={[styles.input, { height: height * 0.055 }]}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="exemple@mail.com"
+                      keyboardType="email-address"
+                      autoComplete={"email"}
+                    />
+                  </>
+                )}
               />
-            </>
-          )}
-        />
+            </View>
+            <View style={{ width: width * 0.39 }}>
+              <Controller
+                control={registerForm.control}
+                name="phone_number"
+                render={({ field: { onChange, value } }) => (
+                  <>
+                    <Text style={[styles.input_label]}>Email</Text>
+                    <TextInput
+                      style={[styles.input, { height: height * 0.055 }]}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="0123456789"
+                      keyboardType="number-pad"
+                      autoComplete={"tel"}
+                    />
+                  </>
+                )}
+              />
+            </View>
+          </View>
+        </View>
         <View style={{ alignItems: "center" }}>
           <View style={[styles.doubleContainer, { width: width * 0.8 }]}>
             <View style={{ width: width * 0.39 }}>
@@ -161,7 +191,7 @@ export default function SignInTab() {
                     <Text style={[styles.input_label]}>Confirmation</Text>
                     <TextInput
                       style={[styles.input, { height: height * 0.055 }]}
-                      onChangeText={onChange}
+                      onSubmitEditing={onChange}
                       value={value}
                       placeholder="••••••••"
                       keyboardType="default"
@@ -209,5 +239,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.border,
     color: Colors.mutedForeground,
+    height: 32,
   },
 });
